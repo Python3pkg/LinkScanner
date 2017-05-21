@@ -25,7 +25,7 @@ class Scanner:
         self.linkqueue=peekQueue()
         self.maxthreads=maxthreads
         self.siteList=self.loadSites(siteList)
-        print("Sitelist:"+str(self.siteList))
+        print(("Sitelist:"+str(self.siteList)))
         self.output={}
 
     def loadSites(self,sitefilename):
@@ -64,7 +64,7 @@ class Scanner:
 
     def startScan(self):
         self.linkqueue.extendleft([(x,1) for x in self.siteList])
-        print(self.linkqueue.tolist())
+        print((self.linkqueue.tolist()))
         self.autos=threading.Thread(target=self.autosave)
         self.autos.start()
         while not self.linkqueue.peek(0)[1] > self.recursion:
@@ -74,7 +74,7 @@ class Scanner:
                 print("Thread Added!")
             elif len(threading.enumerate()) >=self.maxthreads:
                 threading.enumerate()[-1].join()
-                print("{0} Threads Reached!".format(len(threading.enumerate())))
+                print(("{0} Threads Reached!".format(len(threading.enumerate()))))
                 self.save()
             else:
                 self.save()
@@ -86,7 +86,7 @@ class Scanner:
     def scan(self):
         with self.linkqueue.lock:
             url,tasknum = self.linkqueue.pop()
-        print("Scanning " + str(url))
+        print(("Scanning " + str(url)))
         if "mailto:" in str(url):
             pass
         elif "android-app:" in str(url):
@@ -103,6 +103,6 @@ class Scanner:
     def save(self,filename='links.txt'):
         print("Saving...")
         with open(filename,"w+") as linksf:
-            linksf.write('\n'.join(map(str,self.output.keys())))
+            linksf.write('\n'.join(map(str,list(self.output.keys()))))
             linksf.close()
 print('Hello!')
